@@ -7,6 +7,7 @@ import XMonad.Config.Desktop
 import XMonad.Actions.CycleWS
 import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
@@ -25,7 +26,16 @@ import Control.Monad
 
 data TABBED = TABBED deriving (Read, Show, Eq, Typeable)
 instance Transformer TABBED Window where
-    transform TABBED x k = k (tabbedBottom shrinkText defaultTheme) (const x)
+    transform TABBED x k = k (tabbedBottom shrinkText myTabConfig ) (const x)
+
+myTabConfig = defaultTheme { inactiveBorderColor = "#E9EFDA"
+                           , inactiveTextColor = "#E9EFDA"
+                           , inactiveColor = "#4B5853"
+                           , activeColor = "#507568"
+                           , activeTextColor = "#F7FFBC"
+                           , activeBorderColor = "#F7FFBC"
+                           , fontName = "xft:Exo 2-10"
+                           }
 
 quitWithWarning :: X ()
 quitWithWarning = do
@@ -44,6 +54,11 @@ myLayout = lessBorders Screen
     $ mkToggle (single MIRROR)
     $ Tall 1 (3/100) (1/2) ||| OneBig 0.75 0.65 ||| spiral (6/7) ||| MosaicAlt M.empty
 
+myManageHook :: ManageHook
+myManageHook = composeAll
+    [ className =? "MPlayer" --> doFloat
+    , className =? "scosk" --> doFloat ]
+
 modm = mod4Mask
 
 laptopConfig config = id $ config
@@ -56,25 +71,30 @@ main = xmonad $ ewmh $ pagerHints $ desktopConfig
     , terminal = myTerminal
     , handleEventHook    = fullscreenEventHook
     , layoutHook = {- mkToggle (single NBFULL) $ -} desktopLayoutModifiers myLayout
+    , manageHook = myManageHook <+> manageDocks
     , normalBorderColor  = "#2a3533"
     , focusedBorderColor = "#c26157"
-    , logHook = updatePointer (Relative 0.5 0.5)
+    -- , logHook = updatePointer (Relative 0.5 0.5)
     }
     `additionalKeysP`
     [ ("M-S-a", windows W.swapMaster )
     , ("M-a", windows W.focusMaster )
     , ("M-S-q", quitWithWarning )
-    , ("M-c", kill ) 
-    , ("M-S-<Return>", spawn myTerminal )
-    , ("M-<Return>", spawn myAltTerminal )
+    , ("M-S-C-q", io exitSuccess )
+    , ("M-c", kill )
+    , ("M-<Return>", spawn myTerminal )
+    , ("M-S-<Return>", spawn myAltTerminal )
     , ("M-C-<Return>", spawn myTertTerminal )
     , ("M-S-C-<Return>", spawn "st" )
     , ("M-d", spawn "xboomx" )
+    , ("M-S-p", spawn "rofi -show run" )
+    , ("M-S-t", spawn "rofi -show window" )
     , ("M-v", spawn "pavucontrol" )
+    , ("M-g", spawn "gcolor2" )
     , ("M-m", spawn $ myAltTerminal ++ " -e ranger" )
     , ("M-S-m", spawn "pcmanfm" )
     , ("M-`", spawn "mousepad" )
-    , ("M-S-`", spawn $ myAltTerminal ++ " nvim" )
+    , ("M-S-`", spawn $ myTerminal ++ " -e nvim" )
     , ("M-S-h", spawn $ myAltTerminal ++ " -e htop" )
     , ("M-C-j", spawn $ myAltTerminal ++ " -e julia" )
     , ("M-C-p", spawn $ "pamac-manager" )

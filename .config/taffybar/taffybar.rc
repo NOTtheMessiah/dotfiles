@@ -1,0 +1,30 @@
+## gtk_color_scheme = "black:#000000\nwhite:#FFFFFF\ngreen:#00FF00\nred:#FF0000"
+##gtk_color_scheme = "black:#002B36\nwhite:#FDF6E3\ngreen:#859900\nred:#DC322F"
+gtk_color_scheme = "black:#1B2423\nwhite:#C6CFBF\ngreen:#7BBA5F\nred:#FD8966\ncyan:#13BFA9"
+
+style "default" {
+  bg[NORMAL]   = @black
+  fg[NORMAL]   = @white
+  text[NORMAL] = @white
+  fg[PRELIGHT] = @green
+  bg[PRELIGHT] = @black
+  fg[SELECTED] = @cyan
+  bg[SELECTED] = @black
+  ## font_name    = "Exo 2 12"
+  ## font_name    = "Fantasque Sans Mono 12"
+  ## font_name    = "Volkhov 9"
+  font_name    = "Fira Sans 9"
+}
+
+style "active-window" = "default" {
+  fg[NORMAL] = @green
+}
+
+style "notification-button" = "default" {
+  text[NORMAL] = @red
+  fg[NORMAL]   = @red
+}
+
+widget "Taffybar*" style "default"
+widget "Taffybar*WindowSwitcher*label" style "active-window"
+widget "*NotificationCloseButton" style "notification-button"
