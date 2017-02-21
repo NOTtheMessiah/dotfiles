@@ -3,11 +3,11 @@ import Data.Monoid
 import qualified Data.Map        as M
 import qualified XMonad.StackSet as W
 import XMonad
-import XMonad.Config.Desktop
 import XMonad.Actions.CycleWS
 import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
@@ -18,24 +18,50 @@ import XMonad.Layout.OneBig
 import XMonad.Layout.MosaicAlt
 import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
-import XMonad.Util.EZConfig
+import XMonad.Util.Cursor
 import XMonad.Util.Dmenu
+import XMonad.Util.EZConfig
 import System.Taffybar.Hooks.PagerHints (pagerHints)
 import System.Exit
 import Control.Monad
 
+import XMonad.Layout.Circle
+import XMonad.Layout.DecorationMadness
+import XMonad.Actions.WindowMenu
+import XMonad.Layout.ImageButtonDecoration
+import XMonad.Layout.Minimize
+import XMonad.Layout.Maximize
+
 data TABBED = TABBED deriving (Read, Show, Eq, Typeable)
 instance Transformer TABBED Window where
-    transform TABBED x k = k (tabbedBottom shrinkText myTabConfig ) (const x)
+    transform TABBED x k = k (tabbedBottom shrinkText myTabTheme) (const x)
 
-myTabConfig = defaultTheme { inactiveBorderColor = "#E9EFDA"
-                           , inactiveTextColor = "#E9EFDA"
-                           , inactiveColor = "#4B5853"
-                           , activeColor = "#507568"
-                           , activeTextColor = "#F7FFBC"
-                           , activeBorderColor = "#F7FFBC"
-                           , fontName = "xft:Exo 2-10"
+myTabTheme = defaultTheme { inactiveBorderColor = "#E9EFDA"
+                           , inactiveTextColor   = "#E9EFDA"
+                           , inactiveColor       = "#4B5853"
+                           , activeColor         = "#507568"
+                           , activeTextColor     = "#F7FFBC"
+                           , activeBorderColor   = "#F7FFBC"
+                           , fontName            = "xft:Exo 2-10"
                            }
+
+myTheme :: Theme
+myTheme =
+    Theme { activeColor         = "#57946B"
+          , activeBorderColor   = "#507568"
+          , activeTextColor     = "#1B2423"
+          , inactiveColor       = "#1B2423"
+          , inactiveBorderColor = "#4B5853"
+          , inactiveTextColor   = "#E9EFDA"
+          , urgentColor         = "#FFFF00"
+          , urgentBorderColor   = "#00FF00"
+          , urgentTextColor     = "#FF0000"
+          , fontName            = "xft:Exo 2-10"
+          , decoWidth           = 1200
+          , decoHeight          = 19
+          , windowTitleAddons   = []
+          , windowTitleIcons    = []
+          }
 
 quitWithWarning :: X ()
 quitWithWarning = do
@@ -43,9 +69,6 @@ quitWithWarning = do
     s <- dmenu [m]
     when (m == s) (io exitSuccess)
 
-myTerminal = "termite"
-myAltTerminal = "xterm"
-myTertTerminal = "urxvtc"
 
 myLayout = lessBorders Screen
     $ mkToggle (single TABBED)
@@ -66,15 +89,20 @@ laptopConfig config = id $ config
     , focusedBorderColor = "#f12c35"
     }
 
-main = xmonad $ ewmh $ pagerHints $ desktopConfig
-    { modMask = mod4Mask
-    , terminal = myTerminal
+myTerminal = "termite"
+myAltTerminal = "xterm"
+myTertTerminal = "urxvtc"
+
+main = xmonad $ ewmh $ pagerHints $ defaultConfig
+    { startupHook        = setDefaultCursor xC_left_ptr
+    , modMask            = mod4Mask
+    , terminal           = myTerminal
     , handleEventHook    = fullscreenEventHook
-    , layoutHook = {- mkToggle (single NBFULL) $ -} desktopLayoutModifiers myLayout
-    , manageHook = myManageHook <+> manageDocks
+    , layoutHook         = {- mkToggle (single NBFULL) $ -} avoidStruts myLayout
+    , manageHook         = myManageHook <+> manageDocks
     , normalBorderColor  = "#2a3533"
     , focusedBorderColor = "#c26157"
-    -- , logHook = updatePointer (Relative 0.5 0.5)
+    -- , logHook         = updatePointer (Relative 0.5 0.5)
     }
     `additionalKeysP`
     [ ("M-S-a", windows W.swapMaster )
@@ -87,11 +115,12 @@ main = xmonad $ ewmh $ pagerHints $ desktopConfig
     , ("M-C-<Return>", spawn myTertTerminal )
     , ("M-S-C-<Return>", spawn "st" )
     , ("M-d", spawn "xboomx" )
-    , ("M-S-p", spawn "rofi -show run" )
-    , ("M-S-t", spawn "rofi -show window" )
+    , ("M-S-d", spawn "rofi -show run" )
+    , ("M-S-p", spawn "rofi -show drun" )
+    , ("M-w", spawn "rofi -show window" )
     , ("M-v", spawn "pavucontrol" )
     , ("M-g", spawn "gcolor2" )
-    , ("M-m", spawn $ myAltTerminal ++ " -e ranger" )
+    , ("M-m", spawn $ myTertTerminal ++ " -e ranger" )
     , ("M-S-m", spawn "pcmanfm" )
     , ("M-`", spawn "mousepad" )
     , ("M-S-`", spawn $ myTerminal ++ " -e nvim" )
@@ -105,15 +134,20 @@ main = xmonad $ ewmh $ pagerHints $ desktopConfig
     , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 12" )
     , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 12" )
     , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 12" )
+    , ("M-b", sendMessage $ ToggleStruts )
     , ("M-f", sendMessage $ Toggle TABBED )
     --, ("M-S-f", sendMessage $ Toggle NBFULL )
     , ("M-x", sendMessage $ Toggle REFLECTX )
     , ("M-y", sendMessage $ Toggle REFLECTY )
     , ("M-z", sendMessage $ Toggle MIRROR )
+    , ("M-s", nextScreen )
+    , ("M-S-s", shiftNextScreen >> nextScreen )
+    , ("M-;", swapNextScreen )
     , ("M-<L>", moveTo Prev NonEmptyWS )
     , ("M-<R>", moveTo Next NonEmptyWS )
     , ("M-S-<L>", shiftTo Prev NonEmptyWS >> moveTo Prev NonEmptyWS )
     , ("M-S-<R>", shiftTo Next NonEmptyWS >> moveTo Next NonEmptyWS )
+    , ("M-o", windowMenu )
     ]
     `additionalMouseBindings`
     [ ((modm, button4), const prevWS )

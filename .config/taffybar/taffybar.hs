@@ -15,6 +15,7 @@ import System.Information.Memory
 import System.Information.CPU
 import System.Information.Battery
 
+import Graphics.UI.Gtk --(Widget)
 import Graphics.UI.Gtk.General.RcStyle -- (rcParseString)
 import System.Environment.XDG.BaseDir --( getUserConfigFile )
 --import Color (Color(..), hexColor)
@@ -32,7 +33,9 @@ d0ff = "#1CA790"
 c00f = "#86C6B9"
 d00f = "#548CA1"
 cf0f = "#CFC8CB"
-df0f = "#BB8699" 
+df0f = "#bb8699" 
+
+iconPrefix = "/home/ntm/.xmonad/icons/"
 
 memCallback = do
   mi <- parseMeminfo
@@ -55,6 +58,14 @@ batCfg =
       | pct > 0.6 && pct < 0.8 = (0.690196, 0.580392, 0.2509) -- yellow
       | pct > 0.8 = (0.368627, 0.580392, 0.298039) -- green
       | otherwise = (0, 1, 0) -- grey
+
+iconImageWidgetNew :: FilePath -> IO Widget
+iconImageWidgetNew path = do
+  box <- hBoxNew False 0
+  icon <- imageNewFromFile path
+  boxPackStart box icon PackNatural 0
+  widgetShowAll box
+  return $ toWidget box
 
 main = do
   let cfg = defaultTaffybarConfig { barHeight = 16
@@ -91,6 +102,12 @@ main = do
       tray = systrayNew
       bat = batteryBarNew (batCfg {barPadding = 0}) 1 -- batteryBarNew defaultBatteryConfig 1
 
+      
+      clockIcon = iconImageWidgetNew $ iconPrefix ++ "time.xpm"
+      weaIcon = iconImageWidgetNew $ iconPrefix ++ "rain.xpm"
+      cpuIcon = iconImageWidgetNew $ iconPrefix ++ "arch.xpm"
+      volIcon = iconImageWidgetNew $ iconPrefix ++ "volume.xpm"
+
   rcParseString $ ""
         ++ "style \"default\" {"
 --        ++ " font_name = \"" ++ font ++ "\""
@@ -100,6 +117,6 @@ main = do
         ++ "}"
 
   defaultTaffybar cfg { startWidgets = [ pager, note ] --log
-                                        , endWidgets = [ tray, wea, clock, bat, mem, cpu, mpris ]
+                                        , endWidgets = [ tray, wea, weaIcon, clock, clockIcon, bat, mem, cpu, cpuIcon, mpris, volIcon ]
                                         }
 
