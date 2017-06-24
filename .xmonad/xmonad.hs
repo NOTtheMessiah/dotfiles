@@ -7,6 +7,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
 import XMonad.Layout.Reflect
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
@@ -58,10 +59,12 @@ myTheme =
           , urgentTextColor     = "#FF0000"
           , fontName            = "xft:Exo 2-10"
           , decoWidth           = 1200
-          , decoHeight          = 19
+          , decoHeight          = 19 * scalingFactor
           , windowTitleAddons   = []
           , windowTitleIcons    = []
           }
+
+scalingFactor = 1
 
 quitWithWarning :: X ()
 quitWithWarning = do
@@ -70,7 +73,7 @@ quitWithWarning = do
     when (m == s) (io exitSuccess)
 
 
-myLayout = lessBorders Screen
+myLayout = lessBorders Screen -- $ imageButtonDeco shrinkText myTheme $ maximize $ minimize 
     $ mkToggle (single TABBED)
     $ mkToggle (single REFLECTX)
     $ mkToggle (single REFLECTY)
@@ -85,7 +88,7 @@ myManageHook = composeAll
 modm = mod4Mask
 
 laptopConfig config = id $ config
-    { borderWidth = 2
+    { borderWidth = 2 * scalingFactor
     , focusedBorderColor = "#f12c35"
     }
 
@@ -93,8 +96,8 @@ myTerminal = "termite"
 myAltTerminal = "xterm"
 myTertTerminal = "urxvtc"
 
-main = xmonad $ ewmh $ pagerHints $ defaultConfig
-    { startupHook        = setDefaultCursor xC_left_ptr
+main = xmonad $ ewmh $ pagerHints $ docks $ defaultConfig
+    { startupHook        = setDefaultCursor xC_left_ptr <+> setWMName "LG3D"
     , modMask            = mod4Mask
     , terminal           = myTerminal
     , handleEventHook    = fullscreenEventHook
@@ -113,11 +116,12 @@ main = xmonad $ ewmh $ pagerHints $ defaultConfig
     , ("M-<Return>", spawn myTerminal )
     , ("M-S-<Return>", spawn myAltTerminal )
     , ("M-C-<Return>", spawn myTertTerminal )
-    , ("M-S-C-<Return>", spawn "st" )
+    , ("M-S-C-<Return>", spawn "alacritty" )
     , ("M-d", spawn "xboomx" )
     , ("M-S-d", spawn "rofi -show run" )
     , ("M-S-p", spawn "rofi -show drun" )
     , ("M-w", spawn "rofi -show window" )
+    , ("M-S-C-a", spawn "arandr")
     , ("M-v", spawn "pavucontrol" )
     , ("M-g", spawn "gcolor2" )
     , ("M-m", spawn $ myTertTerminal ++ " -e ranger" )
@@ -133,7 +137,9 @@ main = xmonad $ ewmh $ pagerHints $ defaultConfig
     , ("<XF86AudioLowerVolume>", spawn "pamixer -d 12" )
     , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 12" )
     , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 12" )
+    , ("S-<XF86MonBrightnessUp>", spawn "xbacklight -inc 2" )
     , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 12" )
+    , ("S-<XF86MonBrightnessDown>", spawn "xbacklight -dec 2" )
     , ("M-b", sendMessage $ ToggleStruts )
     , ("M-f", sendMessage $ Toggle TABBED )
     --, ("M-S-f", sendMessage $ Toggle NBFULL )
