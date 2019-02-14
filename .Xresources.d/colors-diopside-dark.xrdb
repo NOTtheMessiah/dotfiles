@@ -1,0 +1,26 @@
+! colors
+#define cf00 #E9AC9C
+#define df00 #C27157
+#define cff0 #F6C384
+#define dff0 #B09440
+#define c0f0 #BAC172
+#define d0f0 #5E944C
+#define c0ff #99DAA2
+#define d0ff #1CA790
+#define c00f #86C6B9
+#define d00f #548CA1
+#define cf0f #CFC8CB
+#define df0f #BB8699
+
+! diopside
+#define g000   #1B2423
+#define g111   #26302F
+#define g333   #3E4A47
+#define g666   #66746E
+#define g999   #94A196
+#define gccc   #C6CFBF
+#define gfff   #FCFFE9
+
+#define h000 #002B28
+#define h888 #57946B
+#define hfff #F7FFBC

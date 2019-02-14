@@ -1,0 +1,30 @@
+
+URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select,font-size
+URxvt.url-select.launcher:  chromium
+URxvt.url-select.underline: true
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
+URxvt.keysym.M-c:           perl:clipboard:copy
+URxvt.keysym.M-v:           perl:clipboard:paste
+URxvt.keysym.M-C-v:         perl:clipboard:paste_escaped
+URxvt.scrollBar:            false
+
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
+URxvt.keysym.C-S-Up:   perl:font-size:incglobal
+URxvt.keysym.C-S-Down: perl:font-size:decglobal
+
+URxvt.letterSpace: -1
+URxvt.font: xft:Iosevka: size=9:antialias=true, \
+    xft:DejaVu Sans Mono for Powerline: size=9:antialias=true,\
+    xft:DejaVu Sans: size=9:antialias=true
+!URxvt.font: xft:Fira Code: size=9
+
+!URxvt*background: [85]#021E22
+!URxvt*background: [85]#161A1A
+!URxvt*background: [95]#fcffe9
+URxvt*background: [95]#1B2423
+URxvt.depth: 32

@@ -1,0 +1,14 @@
+
+!XTerm*faceName: xft:ProggyCleanTT: size=10
+!XTerm*faceName: -*-profont-*-*-*-*-12-*-*-*-*-*-*-*
+!xterm*font: -*-profont-*-*-*-*-12-*-*-*-*-*-*-*
+!xterm*font: -nil-profont-medium-r-normal--11-110-72-72-c-60-iso8859-1
+!XTerm*faceName: xft:Input:size=9
+!
+
+!XTerm*faceName: xft:Ubuntu\ Mono\ derivative\ Powerline:size=9
+!XTerm*faceName: xft:Ubuntu\ Mono:size=9
+XTerm*faceName: xft:Fira Mono:size=9
+!XTerm*faceName: xft:Fantasque Sans Mono:size=10
+!XTerm*faceName: xft:Iosevka:size=8
+xterm*metaSendsEscape: true

@@ -1,0 +1,12 @@
+
+rofi.opacity: 90
+rofi.font: Exo2 9
+rofi.location: 2
+!rofi.color-normal: #E9EFDA,#1B2423,#D7DFCC,#596660,#D7DFCC
+!rofi.color-normal: #FF0000,#00FF00,#0000FF,#FF00FF,#0000FF
+rofi.color-normal: g000,gfff,g111,h888,hfff
+rofi.color-urgent: g000,cf00,g111,df00,cf00
+rofi.color-active: g000,c0ff,g111,d0ff,c0ff
+rofi.color-window: #002B28, #57946B
+rofi.ssh-command: {terminal} -e "{ssh-client} {host}"
+rofi.show-icons: true

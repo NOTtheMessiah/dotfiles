@@ -1,0 +1,15 @@
+
+! solarized
+#define s000   #021E22
+#define s333   #1F4447
+#define s666   #496C6C
+#define s999   #7D958F
+#define sccc   #B8BFAF
+#define sfff   #FCE9CB
+
+#define sj000 #002B36
+#define sj333 #2C5153
+#define sj666 #5A7870
+#define sj999 #8DA191
+#define sjccc #C5CBB7
+#define sjfff #FDF6E3

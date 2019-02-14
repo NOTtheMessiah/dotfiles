@@ -1,0 +1,41 @@
+
+!Xft.dpi:       90
+Xft.dpi:        110
+!Xft.dpi:       135
+!Xft.dpi:       224
+Xft.antialias: true
+Xft.hinting:   true
+Xft.rgba:      rgb
+Xft.autohint:  false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+
+! All of the following are constructed from sequences in HCL color space
+! see http://rpackages.ianhowson.com/rforge/colorspace/ or https://vis4.net/blog/posts/avoid-equidistant-hsv-colors/
+#include ".Xresources.d/colors-diopside-dark.xrdb"
+!#include ".Xresources.d/colors-greyscale"
+!#include ".Xresources.d/colors-solarized"
+
+! Application-specific, typically references colors above
+#include ".Xresources.d/xterm.xrdb"
+#include ".Xresources.d/rxvt.xrdb"
+#include ".Xresources.d/rofi.xrdb"
+
+*fading: 5
+*fadeColor: g333
+
+#include ".Xresources.d/termcolors-midcontrast.xrdb"
+
+*color1:  df00
+*color2:  d0f0
+*color3:  dff0
+*color4:  d00f
+*color5:  df0f
+*color6:  d0ff
+*color9:  cf00
+*color10: c0f0
+*color11: cff0
+*color12: c00f
+*color13: cf0f
+*color14: c0ff

@@ -1,0 +1,7 @@
+! URxvt*background: g333
+*background: g000
+*foreground: gccc
+*color0:  g333
+*color8:  g666
+*color7:  g999
+*color15: gfff

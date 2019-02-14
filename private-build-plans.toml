@@ -1,0 +1,31 @@
+# Iosevka custom font variant
+#
+# To use this, clone https://github.com/be5invis/Iosevka
+
+[leading-1125]
+leading = 1125
+
+
+[buildPlans.iosevka-glow-slab-wide]
+family = "Iosevka Glow Slab Wide"
+design = ["expanded", "slab", "leading-1125", "v-underscore-low", "v-asterisk-low", "v-brace-straight", "v-dollar-open", "v-zero-dotted", "v-three-flattop"]
+upright = ["v-i-zshaped","v-l-zshaped", "v-g-opendoublestorey"]
+
+
+[buildPlans.iosevka-glow-wide]
+family = "Iosevka Glow Wide"
+design = ["expanded", "leading-1125", "v-underscore-low", "v-asterisk-low", "v-brace-straight", "v-dollar-open", "v-zero-dotted", "v-three-flattop"]
+upright = ["v-i-zshaped","v-l-zshaped", "v-g-opendoublestorey"]
+
+
+[buildPlans.iosevka-glow-slab]
+family = "Iosevka Glow Slab"
+design = ["slab", "leading-1125", "v-underscore-low", "v-asterisk-low", "v-brace-straight", "v-dollar-open", "v-zero-dotted", "v-three-flattop"]
+upright = ["v-i-zshaped","v-l-zshaped", "v-g-opendoublestorey"]
+
+[buildPlans.iosevka-glow]
+family = "Iosevka Glow"
+design = ["leading-1125", "v-underscore-low", "v-asterisk-low", "v-brace-straight", "v-dollar-open", "v-zero-dotted", "v-three-flattop"]
+upright = ["v-i-zshaped","v-l-zshaped", "v-g-opendoublestorey"]
+parenSize=526
+
